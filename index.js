@@ -39,23 +39,53 @@ function tracker() {
         'Update Employee Role',
         'Add Role',
         'View All Departments',
-        'Add Department'
+        'Add Department',
+        'Exit'
         ]
     })
 
-// .then(answers => {
-//     switch (answers.startPage)) {
-//         case 'View All Employees':
-//             //insert function that will complete this action
-//             break;
-//         case'View All Roles':
+.then(answers => {
+    switch (answers.startPage) {
+        case 'View All Employees':
+            //insert function that will complete this action
+            viewEmployees();
+            break;
+        case 'View All Roles':
+            viewRoles();
+            break;
+        case 'View All Departments':
+            viewDepartments();
+            break;
+        case 'Add Employee':
+            break;
+        case 'Add Role':
+            break;
+        case 'Add Department':
+            break;
+        case 'Exit':
+            console.log('Thank You for using Employee Tracker!');
+            process.exit();
 
-//         break;
-//         case 'View All Departments':
+        default:
+            break;
+    }
+});
 
-//         break;
+function viewEmployees() {
+    const query = 'SELECT * FROM department';
+    db.query(query,  (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(result);
+        return;
+      });
+}
 
-//         default:
-//             break;
-//     }
-// })
+function viewRoles() {
+    const query = 'SELECT * FROM role';
+}
+
+function viewDepartments(){
+    const query= 'SELECT * FROM department';    
+}
