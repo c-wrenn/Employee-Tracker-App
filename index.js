@@ -125,7 +125,7 @@ console.log('roles', roles)
 inquirer.prompt({
     name:'new_firstName',
     type: 'input',
-    message: 'What is the emplyees name?'
+    message: 'What is the employees first name?'
 },
 {
     name: 'new_lastName',
