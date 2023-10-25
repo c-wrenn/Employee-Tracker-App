@@ -4,15 +4,9 @@ CREATE DATABASE employee_tracker_db;
 -- use this database so that the following code will affect this database 
 USE employee_tracker_db;
 
-
-CREATE TABLE employee (
-    
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  firstName VARCHAR(30) NOT NULL,
-  lastName VARCHAR(30) NOT NULL,
-  role_id INT,
-  manager_id INT,
-  FOREIGN KEY (manager_id) REFERENCES employee(firstName) 
+CREATE TABLE department (
+  id INT PRIMARY KEY,
+  depName VARCHAR(30)
 );
 
 CREATE TABLE role (
@@ -23,7 +17,13 @@ CREATE TABLE role (
   FOREIGN KEY (department_id) REFERENCES department(id)
 );
 
-CREATE TABLE department (
-  id INT PRIMARY KEY,
-  depName VARCHAR(30)
+CREATE TABLE employee (
+    
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  firstName VARCHAR(30) NOT NULL,
+  lastName VARCHAR(30) NOT NULL,
+  role_id INT,
+  manager_id INT,
+  FOREIGN KEY (manager_id) REFERENCES employee(id),
+  FOREIGN KEY (role_id) REFERENCES role(id) 
 );

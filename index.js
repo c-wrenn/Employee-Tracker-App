@@ -25,6 +25,7 @@ _________  __      ___ ______   _____   _________    ___   _______   _______
 |_______| |__| \/ |__| |__|     |___|  \____/   |___|     |_______|  |______|
 `                                                                       
 );
+tracker();
 
 function tracker() {
     inquirer.prompt({
@@ -44,6 +45,7 @@ function tracker() {
         ]
     })
 
+
 .then(answers => {
     switch (answers.startPage) {
         case 'View All Employees':
@@ -57,6 +59,7 @@ function tracker() {
             viewDepartments();
             break;
         case 'Add Employee':
+            addEmployee();
             break;
         case 'Add Role':
             break;
@@ -70,9 +73,10 @@ function tracker() {
             break;
     }
 });
+};
 
 function viewEmployees() {
-    const query = 'SELECT * FROM department';
+    const query = 'SELECT * FROM employee';
     db.query(query,  (err, result) => {
         if (err) {
           console.log(err);
@@ -84,8 +88,57 @@ function viewEmployees() {
 
 function viewRoles() {
     const query = 'SELECT * FROM role';
+    db.query(query,  (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(result);
+        return;
+      });
 }
 
 function viewDepartments(){
-    const query= 'SELECT * FROM department';    
+    const query= 'SELECT * FROM department'; 
+    db.query(query,  (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(result);
+        return;
+      });   
+}
+
+async function addEmployee() {
+    const newEmployee = 'INSERT INTO employee SET ?';
+
+     const roleQuery = await db.promise().query('SELECT * FROM role')
+console.log(roleQuery)
+      const roles = roleQuery[0].map((role) => {
+        return {
+            name: role.title,
+            value: role.id
+        }
+      } )
+  
+console.log('roles', roles)
+
+inquirer.prompt({
+    name:'new_firstName',
+    type: 'input',
+    message: 'What is the emplyees name?'
+},
+{
+    name: 'new_lastName',
+    type: 'input',
+    message: 'What is their last name?'
+},
+{
+    name:'new_Role',
+    type: 'list',
+    message: 'Choose employee role:',
+    choices: roles
+})
+.then((newerEmployee) =>{
+    console.log(newerEmployee)
+})
 }
