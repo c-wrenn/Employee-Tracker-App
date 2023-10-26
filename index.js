@@ -26,7 +26,7 @@ _________  __      ___ ______   _____   _________    ___   _______   _______
 `                                                                       
 );
 tracker();
-
+//function to start the app and start prompts
 function tracker() {
     inquirer.prompt({
         name: 'startPage',
@@ -44,8 +44,6 @@ function tracker() {
         'Exit'
         ]
     })
-
-
 .then(answers => {
     switch (answers.startPage) {
         case 'View All Employees':
@@ -62,19 +60,20 @@ function tracker() {
             addEmployee();
             break;
         case 'Add Role':
+            addRole();
             break;
         case 'Add Department':
+            addDepartment();
             break;
         case 'Exit':
             console.log('Thank You for using Employee Tracker!');
             process.exit();
-
         default:
             break;
     }
 });
 };
-
+//function to view all employees
 function viewEmployees() {
     const query = 'SELECT * FROM employee';
     db.query(query,  (err, result) => {
@@ -85,7 +84,7 @@ function viewEmployees() {
         return;
       });
 }
-
+// function to view all roles
 function viewRoles() {
     const query = 'SELECT * FROM role';
     db.query(query,  (err, result) => {
@@ -96,7 +95,7 @@ function viewRoles() {
         return;
       });
 }
-
+//function to view all departments
 function viewDepartments(){
     const query= 'SELECT * FROM department'; 
     db.query(query,  (err, result) => {
@@ -107,22 +106,20 @@ function viewDepartments(){
         return;
       });   
 }
-
+//function to add a new employee
 async function addEmployee() {
     const newEmployee = 'INSERT INTO employee SET ?';
 
      const roleQuery = await db.promise().query('SELECT * FROM role')
-console.log(roleQuery)
+//console.log(roleQuery)
       const roles = roleQuery[0].map((role) => {
         return {
             name: role.title,
             value: role.id
         }
       } )
-  
-console.log('roles', roles)
-
-inquirer.prompt({
+//console.log('roles', roles)
+inquirer.prompt([{
     name:'new_firstName',
     type: 'input',
     message: 'What is the employees first name?'
@@ -137,8 +134,49 @@ inquirer.prompt({
     type: 'list',
     message: 'Choose employee role:',
     choices: roles
+}])
+.then((newEmployee) =>{
+    console.log(newEmployee)
 })
-.then((newerEmployee) =>{
-    console.log(newerEmployee)
-})
+}
+//functions to add a new role
+async function addRole() {
+    const departmentQuery = await db.promise().query('SELECT * FROM department')
+    console.log(departmentQuery)
+          const departments = departmentQuery[0].map((department) => {
+            return {
+                name: department.depName,
+                value: department.id
+            }
+          } )
+    inquirer.prompt([
+    {
+        name: 'newRoleTitle',
+        type:'input',
+        message:'Enter the title of the role you would like to add:'
+    },
+    {
+        name: 'roleDepartment',
+        type:'list',
+        message: 'Which department would you like to add the role to?',
+        choices: departments
+    },
+    {
+        name: 'roleSalary',
+        type: 'input',
+        message: 'Enter the salary for the role:'
+    }
+])
+}
+
+//function to add a new department
+function addDepartment() {
+
+    inquirer.prompt([
+    {
+        name:'newDepName',
+        type: 'input',
+        message:'Enter the name of the department you would like to add:'
+    }
+])
 }
