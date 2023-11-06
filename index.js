@@ -2,8 +2,8 @@
 const mysql= require('mysql2');
 const fs = require('fs');
 const inquirer = require('inquirer');
-const { Connection } = require('mysql2/typings/mysql/lib/Connection');
-require('dotenv').config();
+//const { Connection } = require('mysql2/typings/mysql/lib/Connection');
+//require('dotenv').config();
 
 //create connection
 const db = mysql.createConnection( {
@@ -110,7 +110,7 @@ function viewDepartments(){
 }
 //function to add a new employee
 async function addEmployee() {
-    Connection.query(`INSERT INTO employee (firstName, lastName title,) VALUES(?,?,?) `, [new_firstName, new_lastName, newRole], (err, result) => {
+    db.query(`INSERT INTO employee (firstName, lastName title,) VALUES(?,?,?) `, [{new_firstName, new_lastName, new_Role}], (err, result) => {
         if (err) {
           console.log(err);
         }
@@ -133,12 +133,12 @@ async function addEmployee() {
 inquirer.prompt([{
     name:'new_firstName',
     type: 'input',
-    message: 'What is the employees first name?'
+    message: 'What is the employees first name?',
 },
 {
     name: 'new_lastName',
     type: 'input',
-    message: 'What is their last name?'
+    message: 'What is their last name?',
 },
 {
     name:'new_Role',
