@@ -1,7 +1,9 @@
-//require in 
+
 const mysql= require('mysql2');
 const fs = require('fs');
 const inquirer = require('inquirer');
+const { Connection } = require('mysql2/typings/mysql/lib/Connection');
+require('dotenv').config();
 
 //create connection
 const db = mysql.createConnection( {
@@ -97,7 +99,7 @@ function viewRoles() {
 }
 //function to view all departments
 function viewDepartments(){
-    const query= 'SELECT * FROM department'; 
+    const query = 'SELECT * FROM department'; 
     db.query(query,  (err, result) => {
         if (err) {
           console.log(err);
@@ -108,7 +110,16 @@ function viewDepartments(){
 }
 //function to add a new employee
 async function addEmployee() {
-    const newEmployee = 'INSERT INTO employee SET ?';
+    Connection.query(`INSERT INTO employee (firstName, lastName title,) VALUES(?,?,?) `, [new_firstName, new_lastName, newRole], (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(result);
+      });
+    // Connection.query('INSERT INTO employee SET,(id, title)
+    // VALUES(?, ?, ?)',[new_firstName, new_lastName, newRole])
+
+   // const newEmployee = 'INSERT INTO employee SET ?';
 
      const roleQuery = await db.promise().query('SELECT * FROM role')
 //console.log(roleQuery)
@@ -171,7 +182,6 @@ async function addRole() {
 
 //function to add a new department
 function addDepartment() {
-
     inquirer.prompt([
     {
         name:'newDepName',
