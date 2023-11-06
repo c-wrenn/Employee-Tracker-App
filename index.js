@@ -110,27 +110,28 @@ function viewDepartments(){
 }
 //function to add a new employee
 async function addEmployee() {
-    db.query(`INSERT INTO employee (firstName, lastName title,) VALUES(?,?,?) `, [{new_firstName, new_lastName, new_Role}], (err, result) => {
-        if (err) {
-          console.log(err);
-        }
-        console.log(result);
-      });
-    // Connection.query('INSERT INTO employee SET,(id, title)
-    // VALUES(?, ?, ?)',[new_firstName, new_lastName, newRole])
+    //inquirer.prompt(input)
+    //.then(db.query);
+    // db.query(`INSERT INTO employee (firstName, lastName, title,) VALUES(?,?,?) `, [newEmployee.new_firstName, new_lastName, new_Role], (err, result) => {
+    //     if (err) {
+    //       console.log(err);
+    //     }
+    //     console.log(result);
+    //   });
+  
 
    // const newEmployee = 'INSERT INTO employee SET ?';
 
-     const roleQuery = await db.promise().query('SELECT * FROM role')
-//console.log(roleQuery)
-      const roles = roleQuery[0].map((role) => {
+    const roleQuery = await db.promise().query('SELECT * FROM role')
+    const roles = roleQuery[0].map((role) => {
         return {
             name: role.title,
             value: role.id
         }
       } )
-//console.log('roles', roles)
-inquirer.prompt([{
+console.log('roles', roles)
+inquirer.prompt([
+{
     name:'new_firstName',
     type: 'input',
     message: 'What is the employees first name?',
@@ -148,7 +149,20 @@ inquirer.prompt([{
 }])
 .then((newEmployee) =>{
     console.log(newEmployee)
+    //adds answers to the database
+    .then( db.query(`INSERT INTO employee (firstName, lastName, title,) VALUES(?,?,?) `, [newEmployee.new_firstName, newEmployee.new_lastName, newEmployee.new_Role], (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(result);
+      }))
 })
+// .then( db.query(`INSERT INTO employee (firstName, lastName, title,) VALUES(?,?,?) `, [newEmployee.new_firstName, newEmployee.new_lastName, newEmployee.new_Role], (err, result) => {
+//     if (err) {
+//       console.log(err);
+//     }
+//     console.log(result);
+//   }))
 }
 //functions to add a new role
 async function addRole() {
